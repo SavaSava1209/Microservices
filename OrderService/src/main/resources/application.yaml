@@ -14,8 +14,8 @@ spring:
     database-platform: org.hibernate.dialect.MySQL57InnoDBDialect
     hibernate:
       ddl-auto: update
-    application:
-      name: order-service
+  application:
+    name: order-service
 
 
 eureka:
