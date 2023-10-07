@@ -26,4 +26,6 @@ public class ProductEntity {
     @Column(name="product_quantity")
     private long quantity;
 
+
+
 }

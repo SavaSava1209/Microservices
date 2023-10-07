@@ -4,13 +4,16 @@ import com.jin.ProductService.entity.ProductEntity;
 import com.jin.ProductService.model.ProductRequest;
 import com.jin.ProductService.model.ProductResponse;
 import com.jin.ProductService.repository.ProductRepository;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@Log4j2 // log 所有的 request
 public class ProductServiceImpl implements ProductService{
     ProductRepository productRepository;
+
 
     @Autowired
     public ProductServiceImpl(ProductRepository productRepository) {
@@ -19,22 +22,27 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public long addProduct(ProductRequest productRequest) {
+        log.info("Start: ProductService addProduct");
         ProductEntity productEntity = ProductEntity.builder() // productEntity 裡面用 builder pattern
                 .name(productRequest.getName())
                 .price(productRequest.getPrice())
                 .quantity(productRequest.getQuantity())
                 .build();
          productRepository.save(productEntity);
+        log.info("End: ProductService addProduct");
         return productEntity.getId(); // id will be auto created
     }
 
     @Override
     public ProductResponse getProductById(long id) {
+        log.info("Start: ProductService getProductById");
         ProductEntity productEntity = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product " + id + " is not found"));
 
         ProductResponse productResponse = new ProductResponse();
         BeanUtils.copyProperties(productEntity, productResponse);
+        log.info("End: ProductService getProductById " + productResponse);
+
         return productResponse;
     }
 }
