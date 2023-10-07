@@ -13,8 +13,8 @@ spring:
     database-platform: org.hibernate.dialect.MySQL57InnoDBDialect
     hibernate:
       ddl-auto: update
-    application:
-      name: product-service
+  application:
+    name: product-service
 
 
 eureka:
