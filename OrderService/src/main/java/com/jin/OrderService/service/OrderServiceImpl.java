@@ -1,5 +1,6 @@
 package com.jin.OrderService.service;
 
+import com.jin.OrderService.client.ProductServiceFeignClient;
 import com.jin.OrderService.entity.OrderEntity;
 import com.jin.OrderService.model.OrderRequest;
 import com.jin.OrderService.repository.OrderRepository;
@@ -13,11 +14,14 @@ import java.time.Instant;
 @Log4j2
 public class OrderServiceImpl implements OrderService{
     OrderRepository orderRepository;
-
+    ProductServiceFeignClient productServiceFeignClient;
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository) {
+    public OrderServiceImpl(OrderRepository orderRepository,ProductServiceFeignClient productServiceFeignClient) {
         this.orderRepository = orderRepository;
+        this.productServiceFeignClient = productServiceFeignClient;
     }
+
+
 
     @Override
     public long placeOrder(OrderRequest orderRequest) {
@@ -34,7 +38,8 @@ public class OrderServiceImpl implements OrderService{
         orderRepository.save(orderEntity);
         log.info("Process: Order Service place order save orderEntity with orderId " + orderEntity);
         // call product service to check product quantity, if ok reduce it else throw not enough quantity exception
-
+        productServiceFeignClient.reduceProductQuantity(orderEntity.getProductId(), orderEntity.getQuantity());
+        log.info("Process: OrderService call productService feignClient reduce quantity");
         // call Payment service to charge, if success, mark order PAID, else CANCELLED
         log.info("End: OrderService placeOrder");
         return orderEntity.getId();
