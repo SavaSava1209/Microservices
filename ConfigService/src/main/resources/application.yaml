@@ -3,13 +3,14 @@ server:
 
 spring:
   application:
-    name: config_service
+    name: config-service
   cloud:
     config:
       server:
         git:
-          uri: https://github.com/SavaSava1209/productServices/blob/main/springLiveConfig.yaml
+          uri: https://github.com/zizuoliu/springlive-config
           clone-on-start: true
+
 
 eureka:
   instance:
