@@ -1,9 +1,10 @@
-package com.jin.PaymentService.model;
+package com.jin.OrderService.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 
 @Data
 @AllArgsConstructor
@@ -14,3 +15,4 @@ public class PaymentRequest {
     private String paymentMode;
     private long totalAmount;
 }
+
