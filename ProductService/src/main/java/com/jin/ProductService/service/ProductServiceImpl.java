@@ -23,13 +23,13 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public long addProduct(ProductRequest productRequest) {
         log.info("Start: ProductService addProduct");
-        ProductEntity productEntity = ProductEntity.builder() // productEntity 裡面用 builder pattern
+        ProductEntity productEntity = ProductEntity.builder() // productEntity 裡面用 builder pattern @Build
                 .name(productRequest.getName())
                 .price(productRequest.getPrice())
                 .quantity(productRequest.getQuantity())
                 .build();
          productRepository.save(productEntity);
-        log.info("End: ProductService addProduct");
+        log.info("End: ProductService addProduct"); // productEntity will have an id
         return productEntity.getId(); // id will be auto created
     }
 
