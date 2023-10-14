@@ -21,16 +21,21 @@ public class OrderServiceImpl implements OrderService{
     OrderRepository orderRepository;
     ProductServiceFeignClient productServiceFeignClient;
     PaymentServiceFeignClient paymentServiceFeignClient;
+    RestTemplate restTemplate ;
+
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, ProductServiceFeignClient productServiceFeignClient,
-                            PaymentServiceFeignClient paymentServiceFeignClient) {
+    public OrderServiceImpl(OrderRepository orderRepository,
+                            ProductServiceFeignClient productServiceFeignClient,
+                            PaymentServiceFeignClient paymentServiceFeignClient,
+                            RestTemplate restTemplate
+    ) {
         this.orderRepository = orderRepository;
         this.productServiceFeignClient = productServiceFeignClient;
         this.paymentServiceFeignClient = paymentServiceFeignClient;
+        this.restTemplate = restTemplate;
     }
 
-    RestTemplate restTemplate = new RestTemplate();
 
     @Override
     public long placeOrder(OrderRequest orderRequest) {
