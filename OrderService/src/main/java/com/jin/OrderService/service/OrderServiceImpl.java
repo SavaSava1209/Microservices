@@ -7,6 +7,7 @@ import com.jin.OrderService.model.OrderRequest;
 import com.jin.OrderService.model.OrderResponse;
 import com.jin.OrderService.model.PaymentRequest;
 import com.jin.OrderService.repository.OrderRepository;
+import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,8 @@ public class OrderServiceImpl implements OrderService{
     PaymentServiceFeignClient paymentServiceFeignClient;
     RestTemplate restTemplate ;
 
+    public OrderServiceImpl() {
+    }
 
     @Autowired
     public OrderServiceImpl(OrderRepository orderRepository,
