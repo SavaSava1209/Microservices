@@ -1,0 +1,14 @@
+spring:
+  config:
+    import: optional:configserver:http://localhost:8051
+  datasource:
+    url: jdbc:h2:mem:order
+    username: admin
+    password: getoffer
+    driverClassName: org.h2.Driver
+  jpa:
+    database-platform: org.hibernat.dialect.H2Dialect
+
+eureka:
+  cliend:
+    enabled: false
