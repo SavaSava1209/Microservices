@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import javax.persistence.criteria.Order;
 import java.time.Instant;
 
 @Service
@@ -26,6 +27,7 @@ public class OrderServiceImpl implements OrderService{
                             PaymentServiceFeignClient paymentServiceFeignClient) {
         this.orderRepository = orderRepository;
         this.productServiceFeignClient = productServiceFeignClient;
+        this.paymentServiceFeignClient = paymentServiceFeignClient;
     }
 
     RestTemplate restTemplate = new RestTemplate();
@@ -57,8 +59,10 @@ public class OrderServiceImpl implements OrderService{
                 .build();
 
         String orderStatus = null;
-        try{
+        try {
             paymentServiceFeignClient.doPayment(paymentRequest);
+            log.info("Process Service placeOrder feignCall paymentService doPayment Start");
+
             orderStatus = "PAID";
             log.info("Process Service placeOrder feignCall paymentService doPayment PAID");
         } catch (Exception e){
@@ -84,11 +88,19 @@ public class OrderServiceImpl implements OrderService{
                 "http://localhost:8001/product/" + orderEntity.getProductId(),
                 OrderResponse.ProductResponse.class
         );
+
+        OrderResponse.PaymentResponse paymentResponse = restTemplate.getForObject(
+                "http://localhost:8003/payment/" + orderEntity.getId(),
+                OrderResponse.PaymentResponse.class
+        );
+
         OrderResponse orderResponse = OrderResponse.builder()
                 .orderId(orderEntity.getId())
                 .orderStatus(orderEntity.getOrderStatus())
                 .orderDate(orderEntity.getOrderDate())
                 .totalAmount(orderEntity.getTotalAmount())
+                .productResponse(productResponse)
+                .paymentResponse(paymentResponse)
                 .build();
         log.info("End: OrderService getOrderDetailsById");
 
